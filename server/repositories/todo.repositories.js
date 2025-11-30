@@ -11,4 +11,4 @@ async function getAll(userId) {
   return rows;
 }
 
-module.exports = { getAllTodo };
+module.exports = { getAll };

@@ -10,14 +10,13 @@ router.post("/:username", async function (req, res) {
     return;
   }
   const response = await userService.validateLogin(username, password);
-  console.log(flag);
 
   if (response.status === "failed") {
     res.status(404);
     res.send({ status: "user not found" });
     return;
   }
-  res.send(`${{ username: username, status: "login successfull" }}`);
+  res.send({ username: username, status: "login successfull" });
 });
 
 module.exports = router;
