@@ -22,10 +22,10 @@ function LoginPage() {
       if (response.ok) {
         setStatus("Login successful!");
 
-        const data = await response.json();
+        const data = await response.text();
         localStorage.setItem("ActiveUser", JSON.stringify(data));
       } else {
-        const errorData = await response.json();
+        const errorData = await response.text();
         setStatus(errorData.message || "Login failed");
       }
     } catch (error) {
