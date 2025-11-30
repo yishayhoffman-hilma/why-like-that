@@ -22,19 +22,17 @@ function LoginPage() {
       console.log(response);
 
       if (response.ok) {
-        setStatus("Login successful!");
-
-        const data = await response.text();
-        localStorage.setItem("ActiveUser", JSON.stringify(data));
+        const data = await response.json();
+        localStorage.setItem("ActiveUser", JSON.stringify(data.username));
+        setStatus(data.status);
       } else {
-        const errorData = await response.text();
+        const errorData = await response.json();
         setStatus(errorData.message || "Login failed");
       }
     } catch (error) {
       console.error("Error:", error);
       setStatus("Something went wrong");
     }
-    console.log("login success");
 
     setUsername("");
     setPassword("");

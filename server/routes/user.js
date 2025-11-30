@@ -6,7 +6,7 @@ router.post("/:username", async function (req, res) {
   const password = req.body.password;
 
   if (!username && !password) {
-    res.status(400).send("bad input");
+    res.status(400).send({ status: "bad input" });
     return;
   }
 
@@ -14,7 +14,7 @@ router.post("/:username", async function (req, res) {
   console.log(flag);
 
   if (flag) {
-    res.send("LOGIN SUCCSESS");
+    res.send({ username: username, status: "login successfull" });
     return;
   }
 
