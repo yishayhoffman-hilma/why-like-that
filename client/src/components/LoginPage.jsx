@@ -19,6 +19,8 @@ function LoginPage() {
           password: password,
         }),
       });
+      console.log(response);
+
       if (response.ok) {
         setStatus("Login successful!");
 
