@@ -10,7 +10,7 @@ router.post("/:username", function (req, res) {
   }
 
   if (userService.validateLogin(username, password)) {
-    res.send("LOGIN SUCCSES");
+    res.send("LOGIN SUCCSESS");
   }
   res.status(404).send("user not found");
 });
