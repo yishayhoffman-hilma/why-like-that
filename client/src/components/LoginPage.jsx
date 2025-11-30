@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,6 +27,7 @@ function LoginPage() {
         const data = await response.json();
         localStorage.setItem("ActiveUser", JSON.stringify(data.username));
         setStatus(data.status);
+        navigate("/home");
       } else {
         const errorData = await response.json();
         setStatus(errorData.message || "Login failed");

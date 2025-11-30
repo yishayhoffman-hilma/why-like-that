@@ -11,15 +11,16 @@ router.post("/:username", async function (req, res) {
   }
 
   const flag = await userService.validateLogin(username, password);
-  console.log(flag);
+  console.log("flag", flag);
 
-  if (flag) {
-    res.send({ username: username, status: "login successfull" });
+  if (!flag) {
+    res.status(404);
+    res.send({ status: "user not found" });
     return;
   }
 
-  res.status(404);
-  res.send("user not found");
+  res.send({ username: username, status: "login successfull" });
+
   return;
 });
 
