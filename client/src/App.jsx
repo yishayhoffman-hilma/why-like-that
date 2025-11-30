@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router";
 
 import Login from "./components/LoginPage";
 import "../src/App.css";
+import PostsPage from "./components/PostsPage";
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
             <Route path="/home/:username/*" element={<Home />} /> 
            </Route>  */}
 
-        <Route path="*" element={<h1>EROR 404</h1>} />
+        <Route path="/posts" element={<PostsPage />} />
+        <Route path="*" element={<h1>ERROR 404</h1>} />
       </Routes>
     </>
   );

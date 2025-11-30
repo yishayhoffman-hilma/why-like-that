@@ -6,21 +6,18 @@ router.post("/:username", async function (req, res) {
   const password = req.body.password;
 
   if (!username && !password) {
-    res.status(400).send({ status: "bad input" });
+    res.status(400).send("bad input");
     return;
   }
-
-  const flag = await userService.validateLogin(username, password);
+  const response = await userService.validateLogin(username, password);
   console.log(flag);
 
-  if (flag) {
-    res.send({ username: username, status: "login successfull" });
+  if (response.status === "failed") {
+    res.status(404);
+    res.send({ status: "user not found" });
     return;
   }
-
-  res.status(404);
-  res.send("user not found");
-  return;
+  res.send(`${{ username: username, status: "login successfull" }}`);
 });
 
 module.exports = router;

@@ -10,7 +10,6 @@ async function login(username, password) {
     pin = '${password}'
     and username = '${username}'`
   );
-  console.log(rows);
   return rows;
 }
 
