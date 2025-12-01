@@ -19,6 +19,9 @@ router.post("/:postId/:userId", async function (req, res) {
   if (isNaN(postId) || isNaN(userId)) {
     res.send({ status: "postId or userId is not a number" });
   }
+  if (!content || !content.length > 0) {
+    res.send({ status: "content cannot be empty" });
+  }
 
   const response = await commentService.addComment(postId, userId, content);
   res.send(response);
