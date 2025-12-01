@@ -8,6 +8,9 @@ router.get("/:postId", async function (req, res) {
     res.send({ status: "postId is not a number" });
   }
   const response = await commentService.getAllComments(postId);
+  if (response.data === undefined) {
+    res.status(404);
+  }
   res.send(response);
 });
 

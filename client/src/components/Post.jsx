@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import CommentsSection from "./CommentsSection";
 
 export default function Post() {
   const { postId } = useParams();
@@ -19,7 +20,8 @@ export default function Post() {
 
   return (
     <>
-      <p>{post.content}</p>
+      <h3>{post.content}</h3>
+      <CommentsSection postId={postId} />
     </>
   );
 }
