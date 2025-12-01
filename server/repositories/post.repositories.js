@@ -59,7 +59,7 @@ async function create(userId, content) {
     `
   );
   if (result.affectedRows > 0) {
-    return { status: "insert succsesfull" };
+    return { status: "insert successfull" };
   }
   return { status: "insert failed" };
 }
