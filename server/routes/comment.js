@@ -14,7 +14,7 @@ router.get("/:postId", async function (req, res) {
 router.post("/:postId/:userId", async function (req, res) {
   const postId = Number(req.params.postId);
   const userId = Number(req.params.userId);
-  const content = Number(req.body.content);
+  const content = req.body.content;
 
   if (isNaN(postId) || isNaN(userId)) {
     res.send({ status: "postId or userId is not a number" });

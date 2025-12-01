@@ -17,11 +17,17 @@ async function getAll(postId) {
 }
 
 async function add(userId, postId, content) {
+  console.log("in repo");
+  console.log(`user id ${userId}`);
+  console.log(`post id ${postId}`);
+  console.log(`content ${content}`);
+
   const promiseConnection = connection.promise();
 
   const [result] = await promiseConnection.query(
-    `INSERT INTO comment(user_id, content, post_id)
-     VALUES (?, ?, ?)`[(user_id, post_id, content)]
+    `INSERT INTO comment (user_id, content, post_id)
+       VALUES (?, ?, ?)`,
+    [userId, content, postId]
   );
 
   return result;
@@ -32,10 +38,11 @@ async function deleteComment(commentId) {
 
   const [result] = await promiseConnection.query(
     `UPDATE comment
-    SET deleted = true
-    WHERE id = commentId`,
+      SET deleted = true
+      WHERE id = ?`,
     [commentId]
   );
+  console.log("in repo");
 
   return result;
 }
