@@ -1,15 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const postService = require("../services/post.service");
-router.get("/:userId", async function (req, res) {
-  const userId = Number(req.params.userId);
-
-  if (isNaN(userId)) {
-    res.send({ status: "userId is not a number" });
-  } else {
-    const response = await postService.getUsersPosts(userId);
-    res.send(JSON.stringify(response) + "\n");
-  }
+router.get("/", async function (req, res) {
+  const response = await postService.getPosts();
+  res.send(JSON.stringify(response) + "\n");
 });
 
 router.get("/:userId/:postId", async function (req, res) {

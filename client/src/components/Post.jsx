@@ -19,8 +19,7 @@ export default function Post() {
 
   return (
     <>
-      <h1>{postId}</h1>
-      <h1>{post.content}</h1>
+      <p>{post.content}</p>
     </>
   );
 }
