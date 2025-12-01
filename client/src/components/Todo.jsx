@@ -1,119 +1,130 @@
 import { useEffect, useState } from "react";
+
 function Todo() {
-  const [data, setData] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
+  const [error, setError] = useState(null);
 
   const ActiveUser = JSON.parse(localStorage.getItem("ActiveUser"));
-  //   useEffect(() => {
-  //     async function fetchitems() {
-  //       try {
-  //         const response = await fetch(
-  //           `http://localhost:3000/todos?userId=${ActiveUser.id}`
-  //         );
-  //         const data = await response.json();
-  //         setData(data);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     }
-  //     fetchitems();
-  //   }, []);
 
-  //   async function handleCheckboxChange(id) {
-  //     const listToDo = data.map((item) =>
-  //       item.id === id ? { ...item, completed: !item.completed } : item
-  //     );
-  //     setData(listToDo);
+  useEffect(() => {
+    async function fetchTodos() {
+      try {
+        const res = await fetch(`http://localhost:3000/todos/${ActiveUser}`);
 
-  //     const updatedItem = listToDo.find((item) => item.id === id);
+        if (!res.ok) throw new Error("Failed to fetch todos");
 
-  //     try {
-  //       const updateOption = {
-  //         method: "PATCH",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ completed: updatedItem.completed }),
-  //       };
+        const data = await res.json();
+        setTodos(data);
+      } catch (err) {
+        console.error(err);
+        setError("Could not fetch todos");
+      }
+    }
 
-  //       const response = await fetch(
-  //         `http://localhost:3000/todos/${id}`,
-  //         updateOption
-  //       );
-  //       if (!response.ok) throw new Error("Failed to update todo");
-  //     } catch (err) {
-  //       console.error("Error updating todo:", err);
-  //     }
-  //   }
+    fetchTodos();
+  }, [ActiveUser]);
 
-  //   async function addToDo(title) {
-  //     const newItem = {
-  //       title,
-  //       completed: false,
-  //       userId: "" + ActiveUser.id,
-  //     };
+  // change completed
+  async function handleCheckboxChange(id) {
+    const updatedList = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(updatedList);
 
-  //     try {
-  //       const res = await fetch("http://localhost:3000/todos", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(newItem),
-  //       });
-  //       if (!res.ok) throw new Error();
-  //       const createdtodo = await res.json();
-  //       setData((prev) => [...prev, createdtodo]);
-  //     } catch (err) {
-  //       console.error(err);
-  //       alert("couldnt add to do");
-  //     }
-  //   }
+    const updatedTodo = updatedList.find((todo) => todo.id === id);
 
-  //   async function deleteToDo(id) {
-  //     try {
-  //       const response = await fetch(`http://localhost:3000/todos/${id}`, {
-  //         method: "DELETE",
-  //         headers: { "Content-Type": "application/json" },
-  //       });
+    try {
+      const res = await fetch(`http://localhost:3000/todos/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed: updatedTodo.completed }),
+      });
 
-  //       if (!response.ok) throw new Error("failed");
-  //       setData((prev) => prev.filter((item) => item.id !== id));
-  //     } catch (err) {
-  //       console.log("error:", err);
-  //       alert("couldnt delete todo");
-  //     }
-  //   }
+      if (!res.ok) throw new Error("Failed to update todo");
+    } catch (err) {
+      console.error(err);
+      setError("Could not update todo");
+    }
+  }
 
+  // Add new todo
+  async function addToDo(content) {
+    const newItem = {
+      content,
+      completed: false,
+      username: ActiveUser,
+    };
+
+    try {
+      const res = await fetch("http://localhost:3000/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newItem),
+      });
+
+      if (!res.ok) throw new Error("Failed to add todo");
+
+      const createdTodo = await res.json();
+      setTodos((prev) => [...prev, createdTodo]);
+      setValue("");
+    } catch (err) {
+      console.error(err);
+      setError("Could not add todo");
+    }
+  }
+
+  // Delete todo
+  async function deleteTodo(id) {
+    try {
+      const res = await fetch(`http://localhost:3000/todos/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete todo");
+
+      setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    } catch (err) {
+      console.error(err);
+      setError("Could not delete todo");
+    }
+  }
+
+  // Handle form submit
   function handleSubmit(e) {
     e.preventDefault();
-    addToDo(value);
-    setValue("");
+    if (value.trim() !== "") {
+      addToDo(value);
+    }
   }
 
   return (
     <div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <ul>
-        {data.length === 0
+        {todos.length === 0
           ? "No To Dos Left"
-          : data.map((todo) => (
+          : todos.map((todo) => (
               <li key={todo.id}>
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => handleCheckboxChange(todo.id)}
                 />
-                {todo.title}
-                <button onClick={() => deleteToDo(todo.id)}>delete</button>
+                {todo.content}
+                <button onClick={() => deleteTodo(todo.id)}>Delete</button>
               </li>
             ))}
       </ul>
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="add">Add to do</label>
+        <label htmlFor="add">Add To Do</label>
         <input
           id="add"
           type="text"
           value={value}
-          placeholder="new to do"
+          placeholder="New to do"
           onChange={(e) => setValue(e.target.value)}
         />
         <button type="submit">Add</button>

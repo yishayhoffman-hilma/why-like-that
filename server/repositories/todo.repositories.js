@@ -1,14 +1,18 @@
 const connection = require("../db/connection");
 
-async function getAll(userId) {
+async function getAllByUsername(username) {
   const promiseConnection = connection.promise();
+
   const [rows] = await promiseConnection.query(
-    `select content
-    from todo t
-    where t.user_id = ${userId}`
+    `SELECT t.id, t.content, t.completed
+     FROM todo t
+     JOIN user u ON t.user_id = u.id
+     WHERE u.username = ?
+     ORDER BY t.id ASC`,
+    [username]
   );
-  console.log("rows", rows);
+
   return rows;
 }
 
-module.exports = { getAll };
+module.exports = { getAllByUsername };
