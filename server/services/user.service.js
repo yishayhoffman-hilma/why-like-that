@@ -9,7 +9,8 @@ async function login(username, password) {
 
     return { status: "success", user: response };
   }
-  throw new Error("failed");
+  return { status: "failed" };
+  // throw new Error("failed");
 }
 
 module.exports = { login };
