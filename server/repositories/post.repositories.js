@@ -12,6 +12,17 @@ async function getFromUser(userId) {
   return { posts: rows, status: "success" };
 }
 
+async function get(postId) {
+  const promiseConnection = connection.promise();
+  const [rows] = await promiseConnection.query(
+    `select *
+    from post
+    where id = ${postId}`
+  );
+  console.log(`in post repo : ${rows[0]}`);
+  return { data: rows[0], status: "success", content: rows[0].content };
+}
+
 async function create(userId, content) {
   const promiseConnection = connection.promise();
   const [rows] = await promiseConnection.query(
@@ -33,4 +44,4 @@ async function create(userId, content) {
   return { status: "insert failed" };
 }
 
-module.exports = { create, getFromUser };
+module.exports = { create, getFromUser, get };

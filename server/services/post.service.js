@@ -8,4 +8,18 @@ async function addPost(userId, content) {
   const response = await postRepo.create(userId, content);
   return response;
 }
-module.exports = { addPost, getUsersPosts };
+async function getPost(userId, postId) {
+  const response = await postRepo.get(postId);
+  console.log(`in service response ${JSON.stringify(response)}`);
+  if (response.data.user_id != userId) {
+    console.log(`user id :${userId}`);
+    console.log(`user post id ${response.data.user_id}`);
+
+    return {
+      status: "permission insufficent",
+      content: "you do not have permission to see this post",
+    };
+  }
+  return response;
+}
+module.exports = { addPost, getUsersPosts, getPost };

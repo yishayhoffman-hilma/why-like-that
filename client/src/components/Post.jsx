@@ -17,8 +17,6 @@ export default function Post() {
     fetchPosts();
   }, [postId, userId]);
 
-  console.log(post);
-
   return (
     <>
       <h1>{postId}</h1>
