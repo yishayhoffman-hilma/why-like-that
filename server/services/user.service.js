@@ -1,13 +1,16 @@
 const userRepo = require("../repositories/user.repositories");
 
-async function validateLogin(username, password) {
+async function login(username, password) {
   const response = await userRepo.login(username, password);
   console.log(response);
 
   if (response.length > 0) {
-    return { status: "success" };
+    // console.log(response);
+    console.log(`response in service ${response[0].user_id}`);
+
+    return { status: "success", user: response };
   }
-  return { status: "failed" };
+  throw new Error("failed");
 }
 
-module.exports = { validateLogin };
+module.exports = { login };

@@ -3,7 +3,7 @@ const connection = require("../db/connection");
 async function login(username, password) {
   const promiseConnection = connection.promise();
   const [rows] = await promiseConnection.query(
-    `select username, pin
+    `select username, pin, user_id
     from user u
     join password p on p.user_id = u.id
     where

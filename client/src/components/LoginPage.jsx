@@ -25,7 +25,7 @@ function LoginPage() {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("ActiveUser", JSON.stringify(data.username));
+        localStorage.setItem("ActiveUser", JSON.stringify(data));
         setStatus(data.status);
         navigate("/home");
       } else {
