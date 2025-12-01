@@ -19,7 +19,11 @@ async function getFromUser(userId) {
 async function getAll() {
   const promiseConnection = connection.promise();
   const [rows] = await promiseConnection.query(
-    `SELECT username,p.id,content,user_id from post p join user u on p.user_id = u.id`
+    `SELECT username,p.id,content,user_id
+    from post p 
+    join user u on p.user_id = u.id
+    order by p.id asc
+    `
   );
   console.log(rows);
   return { posts: rows, status: "success" };

@@ -5,6 +5,7 @@ export default function PostsPage() {
   const userId = JSON.parse(localStorage.getItem("ActiveUser")).userId;
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewPostContent] = useState([]);
+  const [postStatus, setPostStatus] = useState();
   useEffect(() => {
     async function fetchPosts() {
       const response = await fetch(`http://localhost:3000/posts`);
@@ -14,6 +15,24 @@ export default function PostsPage() {
     }
     fetchPosts();
   }, [userId]);
+
+  async function addPost() {
+    const response = await fetch(`http://localhost:3000/posts/${userId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: newPostContent }),
+    });
+    const jsonData = await response.json();
+    setPostStatus(jsonData.status);
+    setNewPostContent();
+    if (!response.ok) {
+      throw new Error("Failed to add post");
+    } else if (jsonData.status !== "content cannon be empty") {
+      setPosts((prev) => {
+        return [...prev, { content: newPostContent }];
+      });
+    }
+  }
 
   return (
     <>
@@ -27,10 +46,9 @@ export default function PostsPage() {
         {newPostContent}
       </textarea>
       <br></br>
-      <button>add post</button>
+      <button onClick={addPost}>add post</button>
+      <p>{postStatus}</p>
       {posts.map((value, index) => {
-        console.log(value);
-
         return (
           <Fragment key={index}>
             <div style={{ textAlign: "left" }}>
@@ -38,7 +56,7 @@ export default function PostsPage() {
                 {value.username}: <br></br> {value.content}
               </Link>
               <br></br>
-              <button>show comments</button>
+              <button onClick={() => {}}>show comments</button>
             </div>
           </Fragment>
         );

@@ -24,8 +24,9 @@ router.post("/:userId", async function (req, res) {
   console.log(userId);
   console.log(content);
 
-  if (isNaN(userId) || !content) {
-    res.send({ status: "bad" });
+  if (isNaN(userId) || !content || !content.length > 0) {
+    res.send({ status: "content cannon be empty" });
+    return;
   } else {
     const response = await postService.addPost(userId, content);
     res.send(response);
