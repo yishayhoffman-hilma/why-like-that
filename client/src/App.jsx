@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Todo from "./components/Todo";
 import "../src/App.css";
 import PostsPage from "./components/PostsPage";
+import Post from "./components/Post";
 
 function App() {
   return (
@@ -15,11 +16,10 @@ function App() {
 
         <Route path="/home" element={<Home />}>
           <Route path="todolist" element={<Todo />} />
-          {/* // <Route path="posts" element={<Posts />} />
-          // <Route path="posts/post/:postId" element={<PostDetails />} /> */}
+          <Route path="posts" element={<PostsPage />} />
+          <Route path="posts/:postId" element={<Post></Post>} />
         </Route>
 
-        <Route path="/posts" element={<PostsPage />} />
         <Route path="*" element={<h1>ERROR 404</h1>} />
       </Routes>
     </>
