@@ -7,6 +7,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/user");
 var postsRouter = require("./routes/post");
 var todoRouter = require("./routes/todo");
+var commentsRouter = require("./routes/comment");
 
 var cors = require("cors");
 var app = express();
@@ -22,5 +23,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/todos", todoRouter);
+app.use("/comments", commentsRouter);
 
 module.exports = app;
