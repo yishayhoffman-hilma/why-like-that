@@ -16,7 +16,7 @@ async function getAll(postId) {
   return rows;
 }
 
-async function add(user_id, post_id, content) {
+async function add(userId, postId, content) {
   const promiseConnection = connection.promise();
 
   const [result] = await promiseConnection.query(
