@@ -4,6 +4,7 @@ import Comment from "./Comment";
 export default function CommentsSection(props) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState([]);
+  const [statusMessage, setStatusMessage] = useState("");
   const activeUser = JSON.parse(localStorage.getItem("ActiveUser"));
   const userId = activeUser.userId;
 
@@ -56,8 +57,7 @@ export default function CommentsSection(props) {
       );
       if (!response.ok) throw new Error("failed");
       const jsonData = await response.json();
-      console.log(jsonData);
-
+      setStatusMessage(jsonData);
       setComments((prev) => {
         const comment = {
           content: newComment,
@@ -82,6 +82,7 @@ export default function CommentsSection(props) {
         />
 
         <button onClick={addNewComment}>add comment</button>
+        <p>{statusMessage.status}</p>
       </div>
 
       {comments.length === 0

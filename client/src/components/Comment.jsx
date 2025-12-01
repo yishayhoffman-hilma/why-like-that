@@ -1,7 +1,6 @@
 import "../App.css";
 export default function Comment(props) {
   const activeUser = JSON.parse(localStorage.getItem("ActiveUser"));
-  console.log(activeUser);
 
   return (
     <>
