@@ -20,15 +20,15 @@ async function getPost(userId, postId) {
     response.content = response.status;
     return response;
   }
-  if (response.data.user_id != userId) {
-    console.log(`user id :${userId}`);
-    console.log(`user post id ${response.data.user_id}`);
+  // if (response.data.user_id != userId) {
+  //   console.log(`user id :${userId}`);
+  //   console.log(`user post id ${response.data.user_id}`);
 
-    return {
-      status: "permission insufficent",
-      content: "you do not have permission to see this post",
-    };
-  }
+  //   return {
+  //     status: "permission insufficent",
+  //     content: "you do not have permission to see this post",
+  //   };
+  // }
   return response;
 }
 module.exports = { addPost, getUsersPosts, getPost, getPosts };

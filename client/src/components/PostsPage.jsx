@@ -61,9 +61,8 @@ export default function PostsPage() {
               <Link to={`${value.id}`}>
                 {value.username}: <br></br> {value.content}
               </Link>
-              <br></br>
-              <button onClick={() => {}}>show comments</button>
             </div>
+            <br></br>
           </Fragment>
         );
       })}
