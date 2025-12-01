@@ -59,7 +59,8 @@ export default function PostsPage() {
           <Fragment key={index}>
             <div style={{ textAlign: "left" }}>
               <Link to={`${value.id}`}>
-                {value.username}: <br></br> {value.content}
+                <span className="author"> {value.username}:</span> <br></br>{" "}
+                {value.content}
               </Link>
             </div>
             <br></br>

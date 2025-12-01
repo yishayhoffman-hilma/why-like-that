@@ -1,9 +1,12 @@
+import "../App.css";
 export default function Comment(props) {
   console.log(props);
 
   return (
     <>
-      <p>{props.content}</p>
+      <p>
+        <span className="author">{props.author}</span>: {props.content}
+      </p>
     </>
   );
 }

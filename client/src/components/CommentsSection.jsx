@@ -27,7 +27,13 @@ export default function CommentsSection(props) {
       {comments.length === 0
         ? "No Comments"
         : comments.map((value, index) => {
-            return <Comment key={index} content={value.content} />;
+            return (
+              <Comment
+                author={value.username}
+                key={index}
+                content={value.content}
+              />
+            );
           })}
     </>
   );
