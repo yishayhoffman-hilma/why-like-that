@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import { Link } from "react-router";
+import Logout from "./Logout";
 
 function Home() {
   return (
@@ -7,7 +8,9 @@ function Home() {
       <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <Link to="todolist">To Do List</Link>
         <Link to="posts">Posts</Link>
+        <Logout />
       </nav>
+
       <Outlet />
     </>
   );
