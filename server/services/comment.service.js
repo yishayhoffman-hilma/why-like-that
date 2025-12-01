@@ -15,4 +15,20 @@ async function addComment(postId, userId, content) {
   }
   return { status: "added comment successfully" };
 }
-module.exports = { getAllComments, addComment };
+
+async function deleteComment(commentId, userId) {
+  const comment = await commentRepo.getComment(commentId);
+  if (comment[0].user_id !== userId) {
+    console.log(userId);
+    console.log(comment[0].user_id);
+
+    return { status: "user lacks permissions" };
+  }
+
+  const response = await commentRepo.deleteComment(commentId);
+  if (!response.affectedRows > 0) {
+    return { status: "error" };
+  }
+  return { status: "deleted comment successfully" };
+}
+module.exports = { getAllComments, addComment, deleteComment };

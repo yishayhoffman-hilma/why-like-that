@@ -15,6 +15,20 @@ async function getAll(postId) {
 
   return rows;
 }
+async function getComment(commentId) {
+  const promiseConnection = connection.promise();
+
+  const [rows] = await promiseConnection.query(
+    `SELECT *
+     FROM comment 
+    WHERE id = ?`,
+    [commentId]
+  );
+
+  console.log(rows);
+
+  return rows;
+}
 
 async function add(userId, postId, content) {
   console.log("in repo");
@@ -47,4 +61,4 @@ async function deleteComment(commentId) {
   return result;
 }
 
-module.exports = { getAll, add, deleteComment };
+module.exports = { getAll, add, deleteComment, getComment };

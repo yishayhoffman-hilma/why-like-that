@@ -27,4 +27,16 @@ router.post("/:postId/:userId", async function (req, res) {
   res.send(response);
 });
 
+router.delete("/:commentId/:userId", async function (req, res) {
+  const commentId = Number(req.params.commentId);
+  const userId = Number(req.params.userId);
+
+  if (isNaN(commentId) || isNaN(userId)) {
+    res.send({ status: "commentId or userId is not a number" });
+  }
+
+  const response = await commentService.deleteComment(commentId, userId);
+  res.send(response);
+});
+
 module.exports = router;
