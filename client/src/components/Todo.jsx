@@ -10,7 +10,9 @@ function Todo() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const res = await fetch(`http://localhost:3000/todos/${ActiveUser}`);
+        const res = await fetch(
+          `http://localhost:3000/todos/user/${ActiveUser.username}`
+        );
 
         if (!res.ok) throw new Error("Failed to fetch todos");
 
@@ -23,7 +25,7 @@ function Todo() {
     }
 
     fetchTodos();
-  }, [ActiveUser]);
+  }, []);
 
   // change completed
   async function handleCheckboxChange(id) {
@@ -35,10 +37,12 @@ function Todo() {
     const updatedTodo = updatedList.find((todo) => todo.id === id);
 
     try {
-      const res = await fetch(`http://localhost:3000/todos/${id}`, {
+      const res = await fetch(`http://localhost:3000/todos/completed/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ completed: updatedTodo.completed }),
+        body: JSON.stringify({
+          completed: updatedTodo.completed ? 1 : 0,
+        }),
       });
 
       if (!res.ok) throw new Error("Failed to update todo");
@@ -52,12 +56,11 @@ function Todo() {
   async function addToDo(content) {
     const newItem = {
       content,
-      completed: false,
-      username: ActiveUser,
+      user_id: ActiveUser.userId,
     };
 
     try {
-      const res = await fetch("http://localhost:3000/todos", {
+      const res = await fetch("http://localhost:3000/todos/addTodo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newItem),
@@ -65,8 +68,7 @@ function Todo() {
 
       if (!res.ok) throw new Error("Failed to add todo");
 
-      const createdTodo = await res.json();
-      setTodos((prev) => [...prev, createdTodo]);
+      setTodos((prev) => [...prev, newItem]);
       setValue("");
     } catch (err) {
       console.error(err);
@@ -77,10 +79,10 @@ function Todo() {
   // Delete todo
   async function deleteTodo(id) {
     try {
-      const res = await fetch(`http://localhost:3000/todos/${id}`, {
+      const res = await fetch(`http://localhost:3000/todos/delete/${id}`, {
         method: "DELETE",
       });
-
+      console.log(res);
       if (!res.ok) throw new Error("Failed to delete todo");
 
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
@@ -105,11 +107,11 @@ function Todo() {
       <ul>
         {todos.length === 0
           ? "No To Dos Left"
-          : todos.map((todo) => (
-              <li key={todo.id}>
+          : todos.map((todo, index) => (
+              <li key={index}>
                 <input
                   type="checkbox"
-                  checked={todo.completed}
+                  checked={!!todo.completed}
                   onChange={() => handleCheckboxChange(todo.id)}
                 />
                 {todo.content}
