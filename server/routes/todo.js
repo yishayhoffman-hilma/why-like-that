@@ -2,24 +2,18 @@ var express = require("express");
 var router = express.Router();
 const todoService = require("../services/todo.service");
 
-router.get("/:userId", async function (req, res) {
-  const userId = req.params.userId;
+router.get("/:username", async function (req, res) {
+  const username = req.params.username;
 
-  if (!userId) {
-    res.status(400).send({ status: "bad input" });
-    return;
-  }
-  const response = await todoService.getUserTodo(userId);
-  res.json({ todos: response, status: "success" });
-});
+  if (!username)
+    return res.status(400).send({ message: "Username is required" });
 
-router.post("/:userId", async function (req, res) {
-  const content = req.body.content;
-  if (!content) {
-    res.status(400).send({ status: "bad input" });
-    return;
+  const response = await todoService.getTodosForUsername(username);
+
+  if (response.status === "success") {
+    return res.status(200).send(response.data);
   }
-  const flag = await todoService.insert(username, password);
+  return res.status(500).send({ message: response.message });
 });
 
 module.exports = router;

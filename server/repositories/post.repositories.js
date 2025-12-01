@@ -9,7 +9,7 @@ async function getFromUser(userId) {
     where user_id = ${userId}`
   );
   console.log(rows);
-  return { posts: rows, status: "succes" };
+  return { posts: rows, status: "success" };
 }
 
 async function create(userId, content) {
