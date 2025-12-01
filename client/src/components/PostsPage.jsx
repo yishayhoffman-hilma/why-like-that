@@ -3,6 +3,9 @@ import { Link } from "react-router";
 
 export default function PostsPage() {
   const userId = JSON.parse(localStorage.getItem("ActiveUser")).userId;
+  const currentUsername = JSON.parse(
+    localStorage.getItem("ActiveUser")
+  ).username;
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewPostContent] = useState([]);
   const [postStatus, setPostStatus] = useState();
@@ -29,7 +32,10 @@ export default function PostsPage() {
       throw new Error("Failed to add post");
     } else if (jsonData.status !== "content cannon be empty") {
       setPosts((prev) => {
-        return [...prev, { content: newPostContent }];
+        return [
+          ...prev,
+          { content: newPostContent, username: currentUsername },
+        ];
       });
     }
   }
